@@ -31,8 +31,8 @@ def get_toy_data(
     Returns:
         `(train, test)`
     """
-    train_xlim = 2
-    test_xlim = 6
+    train_xlim = np.pi
+    test_xlim = np.pi
     key, x_key, y_key = random.split(key, 3)
 
     if not parted:
@@ -60,7 +60,7 @@ def get_toy_data(
 
         train_xs = np.concatenate((train_xs_left, train_xs_right))
 
-    target_fn = lambda x: x * np.sin(x)
+    target_fn = lambda x: np.sin(x)
 
     train_ys = target_fn(train_xs)
     train_ys += noise_scale * random.normal(y_key, (train_points, 1))
