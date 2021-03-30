@@ -3,7 +3,7 @@ Default hyperparameter values
 """
 from functools import partial
 
-NOISE_SCALE = 1e-1
+NOISE_SCALE = 5e-1
 ENSEMBLE_SIZE = 20
 
 _model_configs = {
