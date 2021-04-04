@@ -18,8 +18,10 @@ def bann_model(
     Args:
         W_std (float): Weight standard deviation.
         b_std (float): Bias standard deviation.
-        width (int): Hidden layer width.
-        depth (int): Number of hidden layers.
+        first_layer_width (int): First Hidden layer width.
+        second_layer_width (int): Second Hidden layer width.
+        subNN_num (int) : Number of sub neural networks in the architecture
+        keep_rate (float): 1 - Dropout rate.
         activation (string): Activation function string, 'erf' or 'relu'.
         parameterization (string): Parameterization string, 'ntk' or 'standard'.
 
