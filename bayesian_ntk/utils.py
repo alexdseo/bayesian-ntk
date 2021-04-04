@@ -26,7 +26,7 @@ def get_toy_data(
         noise_scale (float): output noise standard deviation
         train_points (int): Training set size
         test_points (int): Test set size
-        parted (bool): Set True to partition training data
+        parted (bool): Set Flase, not partitioning the training data
 
     Returns:
         `(train, test)`
@@ -43,10 +43,18 @@ def get_toy_data(
             maxval = train_xlim
         )
     else:
-        train_xs = random.uniform(
+        half_train_points = train_points // 2
+        train_xs_left = random.uniform(
             x_key,
-            shape=(train_points, 1),
+            shape=(half_train_points, 1),
             minval=-train_xlim,
+            maxval=-train_xlim / 3
+        )
+
+        train_xs_right = random.uniform(
+            x_key,
+            shape=(half_train_points, 1),
+            minval=train_xlim / 3,
             maxval=train_xlim
         )
 
