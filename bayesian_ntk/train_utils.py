@@ -14,7 +14,6 @@ method_input_dct = {
 
 def fetch_new_predict_fn(
      predict_fn,
-     key,
      train_method,
      init_params,
      aux_params,
@@ -24,7 +23,6 @@ def fetch_new_predict_fn(
 
     Args:
         predict_fn: Standard NN forward pass function
-        key: key specific to dropout layer
         train_method (str): Ensemble training method
         init_params (pytree): Initialised NN parameters
         aux_params (pytree): Auxiliary initialised NN parameters, for e.g. JVPs
@@ -43,7 +41,7 @@ def fetch_new_predict_fn(
     init_jvp_fn = jvp_fn(predict_fn, init_params)
     aux_jvp_fn = jvp_fn(predict_fn, aux_params)
 
-    if train_method in ['deep_ensemble', 'rand_prior_param']:
+    if train_method in ['deep_ensemble', 'rand_prior_param', 'bann']:
         new_predict_fn = predict_fn
 
     elif train_method == 'ntkgp_lin':
@@ -69,8 +67,8 @@ def fetch_new_predict_fn(
         )
         new_predict_fn = lambda params, x: predict_fn(params, x) + init_jvp_fn(reweighted_aux_params, x)
 
-    elif train_method in ['rand_prior_fn', 'bann']:
-        new_predict_fn = lambda params, x: predict_fn(params, x, rng=key) + predict_fn(aux_params, x, rng=key)
+    elif train_method == 'rand_prior_fn':
+        new_predict_fn = lambda params, x: predict_fn(params, x) + predict_fn(aux_params, x)
 
     else:
         raise ValueError('Train method {} not found.'.format(train_method))

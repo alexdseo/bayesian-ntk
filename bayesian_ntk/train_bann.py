@@ -69,7 +69,6 @@ def train_model(
     # define `train_method` dependent modified forward pass and regularisation
     new_predict_fn = fetch_new_predict_fn(
         predict_fn,
-        key,
         train_method,
         init_params,
         aux_params
