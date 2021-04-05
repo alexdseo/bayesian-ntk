@@ -63,7 +63,7 @@ def train_model(
 
     # initialise auxiliary (non-trainable) parameters for JVPs in NTKGP methods #dokey = key for dropout layer
     # or extra forward pass in RP-fn method
-    key, subkey, dokey = random.split(key, 3)
+    key, subkey = random.split(key)
     _, aux_params = init_fn(subkey, (-1, 1))
 
     # define `train_method` dependent modified forward pass and regularisation
