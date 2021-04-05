@@ -21,7 +21,6 @@ def train_model(
     second_layer_width,
     subNN_num,
     keep_rate,
-    depth,
 ):
     """Train a single baselearner model and calculate test predictions.
 
