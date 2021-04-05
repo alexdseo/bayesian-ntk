@@ -4,7 +4,7 @@ Default hyperparameter values
 from functools import partial
 
 NOISE_SCALE = 5e-1
-ENSEMBLE_SIZE = 20
+ENSEMBLE_SIZE = 10
 
 _model_configs = {
     "default": dict(
@@ -13,7 +13,7 @@ _model_configs = {
         width = 512,                # Hidden layer width
         depth = 2,                  # Number of hidden layers
         activation = 'erf'          # Activation function
-    )
+    ),
     
     "bann": dict(
         W_std = 1.5,                # Weight standard deviation
