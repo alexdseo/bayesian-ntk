@@ -92,7 +92,7 @@ def bann_model(
     init_fn, apply_fn, kernel_fn = stax.serial(
         CSB,
         stax.Dropout(keep_rate),
-        stax.Dense(1, parameterization=parameterization, W_std, b_std)
+        stax.Dense(1, W_std, b_std, parameterization=parameterization)
     )
 
     apply_fn = jit(apply_fn)
