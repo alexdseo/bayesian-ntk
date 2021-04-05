@@ -61,7 +61,7 @@ def train_model(
     # initialise initial parameters
     _, init_params = init_fn(key, (-1, 1))
 
-    # initialise auxiliary (non-trainable) parameters for JVPs in NTKGP methods #dokey = key for dropout layer
+    # initialise auxiliary (non-trainable) parameters for JVPs in NTKGP methods
     # or extra forward pass in RP-fn method
     key, subkey = random.split(key)
     _, aux_params = init_fn(subkey, (-1, 1))
@@ -85,7 +85,7 @@ def train_model(
 
     # define loss function
     def mse_loss(params, x, y):
-        preds = new_predict_fn(params, x)
+        preds = new_predict_fn(params, x, rng=key)
         return np.mean((preds - y) ** 2)
 
     train_size = len(train_data.inputs)
@@ -106,6 +106,6 @@ def train_model(
         opt_state = opt_update(i, grad_loss(opt_state, *train_data), opt_state)
 
     final_params = get_params(opt_state)
-    fx_final_test = new_predict_fn(final_params, test_data.inputs)
+    fx_final_test = new_predict_fn(final_params, test_data.inputs, rng=key)
 
     return fx_final_test
