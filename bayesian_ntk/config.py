@@ -5,7 +5,7 @@ from functools import partial
 
 NOISE_SCALE = 5e-1
 TRAIN_NOISE_SCALE = 1e-1
-ENSEMBLE_SIZE = 10
+ENSEMBLE_SIZE = 20
 
 _model_configs = {
     "default": dict(
@@ -31,14 +31,14 @@ _train_configs = {
     "default": dict(
         learning_rate = 1e-3,       # Learning rate
         training_steps = 50000,     # Number of gradient updates
-        noise_scale = TRAIN_NOISE_SCALE,  # Observation noise standard deviation
+        noise_scale = NOISE_SCALE,  # Observation noise standard deviation
         **_model_configs["default"]
     ),
 
     "bann": dict(
         learning_rate = 1e-3,       # Learning rate
         training_steps = 50000,     # Number of gradient updates
-        noise_scale = TRAIN_NOISE_SCALE,  # Observation noise standard deviation
+        noise_scale = NOISE_SCALE,  # Observation noise standard deviation
         **_model_configs["bann"]
     )
 }
