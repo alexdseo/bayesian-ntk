@@ -85,7 +85,7 @@ def train_model(
 
     # define loss function
     def mse_loss(params, x, y):
-        preds = new_predict_fn(params, x, rng=dokey)
+        preds = new_predict_fn(params, x)
         return np.mean((preds - y) ** 2)
 
     train_size = len(train_data.inputs)
@@ -106,6 +106,6 @@ def train_model(
         opt_state = opt_update(i, grad_loss(opt_state, *train_data), opt_state)
 
     final_params = get_params(opt_state)
-    fx_final_test = new_predict_fn(final_params, test_data.inputs, rng=dokey)
+    fx_final_test = new_predict_fn(final_params, test_data.inputs)
 
     return fx_final_test
