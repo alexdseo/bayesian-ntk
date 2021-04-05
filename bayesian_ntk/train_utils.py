@@ -8,7 +8,8 @@ method_input_dct = {
     "RP-fn": 'rand_prior_fn',
     "NTKGP-param": 'ntkgp_param',
     "NTKGP-fn": 'ntkgp_fn',
-    "NTKGP-lin": 'ntkgp_lin'
+    "NTKGP-lin": 'ntkgp_lin',
+    "BANN": 'bann'
 }
 
 def fetch_new_predict_fn(
@@ -56,7 +57,7 @@ def fetch_new_predict_fn(
         )
         new_predict_fn = lambda params, x: predict_fn(params, x) + init_jvp_fn(aux_params_zeroed, x)
 
-    elif train_method == 'ntkgp_fn':
+    elif train_method in ['ntkgp_fn', 'bann']:
         # reweighted_aux_params multiplies all but last layer parameters by sqrt(2)
         reweighted_aux_params = reweight_params(
             aux_params,
@@ -100,7 +101,7 @@ def fetch_regularisation_fn(
 
     if train_method in ['ntkgp_lin', 'ntkgp_param', 'rand_prior_param']:
         regularisation_fn = init_params_decay
-    elif train_method in ['ntkgp_fn', 'rand_prior_fn']:
+    elif train_method in ['ntkgp_fn', 'rand_prior_fn', 'bann']:
         regularisation_fn = weight_decay
     elif train_method == 'deep_ensemble':
         # don't regularise standard deep ensembles (optional)
