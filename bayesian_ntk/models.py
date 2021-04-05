@@ -77,7 +77,7 @@ def bann_model(
             ),
             stax.serial(
                 stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(9 * second_layer_width W_std, b_std, parameterization=parameterization), act(),
+                stax.Dense(9 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
