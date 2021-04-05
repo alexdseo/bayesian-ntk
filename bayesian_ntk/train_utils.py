@@ -68,7 +68,7 @@ def fetch_new_predict_fn(
         new_predict_fn = lambda params, x: predict_fn(params, x) + init_jvp_fn(reweighted_aux_params, x)
 
     elif train_method in ['rand_prior_fn', 'bann']:
-        new_predict_fn = lambda params, x: predict_fn(params, x) + predict_fn(aux_params, x)
+        new_predict_fn = lambda params, x, rng: predict_fn(params, x, rng) + predict_fn(aux_params, x, rng)
 
     else:
         raise ValueError('Train method {} not found.'.format(train_method))
