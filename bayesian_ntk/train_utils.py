@@ -57,7 +57,7 @@ def fetch_new_predict_fn(
         )
         new_predict_fn = lambda params, x, rng: predict_fn(params, x, rng) + init_jvp_fn(aux_params_zeroed, x)
 
-    elif train_method in ['ntkgp_fn', 'bann']:
+    elif train_method == 'ntkgp_fn':
         # reweighted_aux_params multiplies all but last layer parameters by sqrt(2)
         reweighted_aux_params = reweight_params(
             aux_params,
@@ -67,7 +67,7 @@ def fetch_new_predict_fn(
         )
         new_predict_fn = lambda params, x, rng: predict_fn(params, x, rng) + init_jvp_fn(reweighted_aux_params, x)
 
-    elif train_method == 'rand_prior_fn':
+    elif train_method in ['rand_prior_fn', 'bann']:
         new_predict_fn = lambda params, x, rng: predict_fn(params, x, rng) + predict_fn(aux_params, x, rng)
 
     else:
