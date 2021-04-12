@@ -61,21 +61,23 @@ def get_toy_data(
             maxval=train_xlim
         )
 
-    target_fn = lambda x: np.sin(x)
+        train_xs = np.concatenate((train_xs_left, train_xs_right))
+
+    target_fn = lambda x: x * np.sin(x)
 
     train_ys = target_fn(train_xs)
     train_ys += noise_scale * random.normal(y_key, (train_points, 1))
     train = Data(
-        inputs = train_xs,
-        targets = train_ys
+        inputs=train_xs,
+        targets=train_ys
     )
 
     test_xs = np.linspace(-test_xlim, test_xlim, test_points)
     test_xs = np.reshape(test_xs, (test_points, 1))
     test_ys = target_fn(test_xs)
     test = Data(
-        inputs = test_xs,
-        targets = test_ys
+        inputs=test_xs,
+        targets=test_ys
     )
 
     return train, test
