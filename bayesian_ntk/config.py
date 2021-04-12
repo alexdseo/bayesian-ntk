@@ -24,6 +24,16 @@ _model_configs = {
         keep_rate = 0.9,            # Dropout rate
         subNN_num = 10,             # Number of sub neural networks
         activation = 'erf'          # Activation function
+    ),
+
+    "bann_mnist": dict(
+        W_std = 1.5,                # Weight standard deviation
+        b_std = 0.05,               # Bias standard deviation
+        first_layer_width = 2,      # First Hidden layer width
+        second_layer_width = 5,     # Second Hidden layer width
+        keep_rate = 0.9,            # Dropout rate
+        subNN_num = 10,             # Number of sub neural networks
+        activation = 'relu'        # Activation function for classification task
     )
 }
 
@@ -40,6 +50,15 @@ _train_configs = {
         training_steps = 50000,     # Number of gradient updates
         noise_scale = NOISE_SCALE,  # Observation noise standard deviation
         **_model_configs["bann"]
+    ),
+
+    "bann_mnist": dict(
+        learning_rate = 1e-2,       # Learning rate
+        epochs = 20,                # Number of gradient updates
+        batch_size = 128,           # batch size
+        n_targets = 10,             # Number of target labels
+        layer_sizes=[784, 512, 512, 10],  # layer size of mnist image
+        ** _model_configs["bann_mnist"]
     )
 }
 
@@ -47,6 +66,11 @@ _data_configs = {
     "default": dict(
         train_points = 20,          # Training set size
         test_points = 50            # Test set size
+    ),
+
+    "mnist": dict(
+        train_points = 60000,          # Training set size from tfds
+        test_points = 10000            # Test set size from tfds
     )
 }
 

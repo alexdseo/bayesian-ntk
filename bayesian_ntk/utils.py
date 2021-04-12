@@ -4,6 +4,9 @@ import jax.numpy as np
 from jax import random
 import math
 from collections import namedtuple
+import tensorflow_datasets as tfds
+
+data_dir = '/tmp/tfds'  ##mnist directory
 
 Data = namedtuple(
     'Data',
@@ -15,7 +18,7 @@ def get_toy_data(
     noise_scale,
     train_points,
     test_points,
-    parted = False
+    parted = True
 ):
     """Fetch train and test data for Figure 1 of NeurIPS submission.
        Adds noise to train targets as per Lemma 3 of
@@ -73,6 +76,59 @@ def get_toy_data(
     test = Data(
         inputs = test_xs,
         targets = test_ys
+    )
+
+    return train, test
+
+def get_mnist_data(
+    key,
+    train_points,
+    test_points
+):
+    """Fetch train and test data using TensorFlow data loader for larger scale experiment,
+    specifically, classification task using mnist data
+
+    Args:
+        key: jax.random.PRNGKey instance
+        train_points (int): Training set size
+        test_points (int): Test set size
+
+    Returns:
+        `(train, test)`
+    """
+
+    def one_hot(x, k, dtype=np.float32):
+        """Create a one-hot encoding of x of size k."""
+        return np.array(x[:, None] == np.arange(k), dtype)
+
+    # Fetch full datasets for evaluation
+    # tfds.load returns tf.Tensors (or tf.data.Datasets if batch_size != -1)
+    # You can convert them to NumPy arrays (or iterables of NumPy arrays) with tfds.dataset_as_numpy
+    mnist_data, info = tfds.load(name="mnist", batch_size=-1, data_dir=data_dir, with_info=True)
+    mnist_data = tfds.as_numpy(mnist_data)
+    train_data, test_data = mnist_data['train'], mnist_data['test']
+    num_labels = info.features['label'].num_classes
+    h, w, c = info.features['image'].shape
+    num_pixels = h * w * c
+
+    # Full train set
+    train_images, train_labels = train_data['image'], train_data['label']
+    train_images = np.reshape(train_images, (len(train_images), num_pixels))
+    train_labels = one_hot(train_labels, num_labels)
+
+    # Full test set
+    test_images, test_labels = test_data['image'], test_data['label']
+    test_images = np.reshape(test_images, (len(test_images), num_pixels))
+    test_labels = one_hot(test_labels, num_labels)
+
+    train = Data(
+        inputs=train_images,
+        targets=train_labels
+    )
+
+    test = Data(
+        inputs=test_images,
+        targets=test_labels
     )
 
     return train, test
