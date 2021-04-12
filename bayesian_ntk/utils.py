@@ -18,7 +18,7 @@ def get_toy_data(
     noise_scale,
     train_points,
     test_points,
-    parted = True
+    parted = False
 ):
     """Fetch train and test data for Figure 1 of NeurIPS submission.
        Adds noise to train targets as per Lemma 3 of
