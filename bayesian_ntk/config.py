@@ -19,8 +19,8 @@ _model_configs = {
     "bann": dict(
         W_std = 1.5,                # Weight standard deviation
         b_std = 0.05,               # Bias standard deviation
-        first_layer_width = 2,      # First Hidden layer width
-        second_layer_width = 5,     # Second Hidden layer width
+        first_layer_width = 300,      # First Hidden layer width
+        second_layer_width = 10,     # Second Hidden layer width
         keep_rate = 0.9,            # Dropout rate
         subNN_num = 10,             # Number of sub neural networks
         activation = 'erf'          # Activation function
