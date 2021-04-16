@@ -36,53 +36,68 @@ def bann_model(
         stax.FanOut(subNN_num),
         stax.parallel(
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(2 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(2 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(3 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(3 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(4 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(4 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(5 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(5 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(6 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(6 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(7 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(7 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(8 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(8 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(9 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(9 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
                 stax.Dropout(keep_rate)
             ),
             stax.serial(
-                stax.Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
-                stax.Dense(10 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(first_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                Dense(10 * second_layer_width, W_std, b_std, parameterization=parameterization), act(),
+                stax.Dropout(keep_rate)
+            )
+        ),
+        stax.FanInConcat()
+    )
+
+    Additive = stax.serial(
+        stax.FanOut(2),
+        stax.parallel(
+            stax.serial(
+                CSB,
+                stax.Dropout(keep_rate)
+            ),
+            stax.serial(
+                CSB,
                 stax.Dropout(keep_rate)
             )
         ),
@@ -90,9 +105,8 @@ def bann_model(
     )
 
     init_fn, apply_fn, kernel_fn = stax.serial(
-        CSB,
-        stax.Dropout(keep_rate),
-        stax.Dense(1, W_std, b_std, parameterization=parameterization)
+        Additive,
+        Dense(1, W_std, b_std, parameterization=parameterization)
     )
 
     apply_fn = jit(apply_fn)
